@@ -3,15 +3,15 @@ import { StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AuthScreen from "../../Components/Auth";
 
-const SignupScreen = () => {
+const SigninScreen = () => {
   return (
     <>
       <StatusBar barStyle={"light-content"} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-        <AuthScreen isSignup />
+        <AuthScreen isSignin />
       </SafeAreaView>
     </>
   );
 };
 
-export default SignupScreen;
+export default SigninScreen;
