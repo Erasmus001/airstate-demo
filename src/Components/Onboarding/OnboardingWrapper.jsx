@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const OnboardingWrapper = ({ children, next, prev, currentIndex }) => {
@@ -13,17 +13,33 @@ const OnboardingWrapper = ({ children, next, prev, currentIndex }) => {
               onPress={next}
               style={[currentIndex < 1 ? styles.fullButton : styles.button]}
             >
-              <Text style={{ color: "white" }}>Next</Text>
+              <Text style={[styles.buttonTxt, styles.fullButtonTxt]}>
+                Get started
+              </Text>
             </TouchableOpacity>
           ) : (
-            <>
+            <View style={styles.btn}>
               <TouchableOpacity onPress={prev} style={styles.button}>
-                <Text style={{ color: "white" }}>Prev</Text>
+                <Text style={styles.buttonTxt}>Prev</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={next} style={styles.button}>
-                <Text style={{ color: "white" }}>Next</Text>
-              </TouchableOpacity>
-            </>
+              {currentIndex >= 2 ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.prompt({ title: "Hello", message: "New test" });
+                  }}
+                  onLongPress={() => {
+                    Alert.alert("You just long pressed...");
+                  }}
+                  style={styles.button}
+                >
+                  <Text style={styles.buttonTxt}>Done</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={next} style={styles.button}>
+                  <Text style={styles.buttonTxt}>Next</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           )}
         </View>
       </View>
@@ -51,19 +67,35 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "white",
     height: "100%",
-    borderWidth: 1,
-    borderColor: "white",
+    borderRadius: 5,
   },
   fullButton: {
     width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "white",
     height: "100%",
-    borderWidth: 1,
-    borderColor: "white",
+    borderRadius: 8,
+  },
+  fullButtonTxt: {
+    color: "black",
+    fontSize: 24,
+    fontWeight: "500",
+  },
+  buttonTxt: {
+    color: "black",
+    fontSize: 22,
+  },
+  btn: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    rowGap: 20,
   },
 });
