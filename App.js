@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useAuthContext } from "./src/Context/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,7 +11,13 @@ const AppStack = createNativeStackNavigator();
 
 const App = () => {
   const {currentUser} = useAuthContext()
-  const [isAppReady, _setIsAppReady] = useState(false)
+  const [isAppReady, setIsAppReady] = useState(false)
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      setIsAppReady(true)
+    }, 3000)
+  })
 
   useEffect(() => {
     if (isAppReady) {
@@ -23,21 +29,10 @@ const App = () => {
     <AppContextProvider>
       <NavigationContainer>
         <AppStack.Navigator initialRouteName="splash">
-          <AppStack.Screen name="splash" component={SplashScreen} />
+          {/* <AppStack.Screen name="splash" component={SplashScreen} options={{headerShown: false}} /> */}
           {!currentUser ? <AppStack.Screen name="auth" component={AuthNavigator} /> : <AppStack.Screen name="home" component={AppNavigator} />}
         </AppStack.Navigator>
       </NavigationContainer>
-
-      {/* <View style={styles.container}> */}
-      {/* <StatusBar style="light" /> */}
-      {/* <SplashScreen /> */}
-      {/* <OnboardingScreen /> */}
-      {/* <GetStartedScreen /> */}
-      {/* <SignupScreen /> */}
-      {/* <SigninScreen /> */}
-      {/* <AuthScreen isSignup /> */}
-      {/* <RecoverEmail /> */}
-      {/* </View> */}
     </AppContextProvider>
   );
 }

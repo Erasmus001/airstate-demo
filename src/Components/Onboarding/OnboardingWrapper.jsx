@@ -25,7 +25,7 @@ const OnboardingWrapper = ({ children, next, prev, currentIndex }) => {
               {currentIndex >= 2 ? (
                 <TouchableOpacity
                   onPress={() => {
-                    Alert.prompt({ title: "Hello", message: "New test" });
+                    Alert.alert("Done");
                   }}
                   onLongPress={() => {
                     Alert.alert("You just long pressed...");

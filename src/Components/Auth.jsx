@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const AuthScreen = ({ isSignin, isSignup }) => {
+const AuthScreen = ({ isSignin, isSignup, navigation }) => {
   const [appColor, setAppColor] = React.useState(null);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -113,7 +113,10 @@ const AuthScreen = ({ isSignin, isSignup }) => {
               </View>
               {isSignin && (
                 <View style={styles.forgotPassword}>
-                  <Text style={styles.forgotPasswordLink}>
+                  <Text
+                    style={styles.forgotPasswordLink}
+                    onPress={() => navigation.push("resetPassword")}
+                  >
                     Forgot password?
                   </Text>
                 </View>
@@ -128,7 +131,9 @@ const AuthScreen = ({ isSignin, isSignup }) => {
               disabled={emptyForm && true}
               onPress={isSignin ? handleAccountLogin : handleCreateAccount}
             >
-              <Text style={styles.formSubmitBtnTxt}>Create account</Text>
+              <Text style={styles.formSubmitBtnTxt}>
+                {isSignin ? "Login" : "Create account"}
+              </Text>
             </TouchableOpacity>
             <View style={styles.subTxt}>
               <Text style={styles.haveAnAcc}>
@@ -136,7 +141,14 @@ const AuthScreen = ({ isSignin, isSignup }) => {
                   ? "Already have an account?"
                   : "Don't have an account?"}
               </Text>
-              <Text style={styles.login}>
+              <Text
+                style={styles.login}
+                onPress={() =>
+                  isSignin
+                    ? navigation.push("signin")
+                    : navigation.push("signup")
+                }
+              >
                 {isSignup ? "Sign in" : "Sign up"}
               </Text>
             </View>

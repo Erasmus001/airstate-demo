@@ -4,14 +4,17 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 const GetStartedScreen = () => {
   return (
     <View style={styles.getStartedScreen}>
+      {/* //* Main Wrapper */}
       <View style={styles.container}>
         <View style={styles.innerContainer}>
+          {/* //* Into Text */}
           <View style={styles.introTxt}>
             <Text style={styles.headTxt}>Real Estate without the hassle</Text>
             <Text style={styles.smallTxt}>
               Renting a better home does't mean spending more money.
             </Text>
           </View>
+          {/* //* CTA buttons */}
           <View style={styles.creatAccountBtnView}>
             <Pressable style={styles.creatAccountBtn}>
               <Text style={styles.creatAccountBtnTxt}>Create Account</Text>
@@ -20,7 +23,6 @@ const GetStartedScreen = () => {
               <Text style={styles.haveAccountTxt}>
                 Already have an account? Login
               </Text>
-              {/* <Text style={styles.loginLink}>Login</Text> */}
             </View>
           </View>
         </View>
