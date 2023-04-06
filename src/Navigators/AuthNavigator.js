@@ -5,12 +5,17 @@ import RecoverEmail from "../Screens/AuthScreens/RecoverEmailScreen";
 import VerifyEmailScreen from "../Screens/AuthScreens/VerifyEmailScreen";
 import VerifyOTPScreen from "../Screens/AuthScreens/VerifyOTPScreen";
 import ResetPasswordScreen from "../Screens/AuthScreens/ResetPasswordScreen";
+import AuthScreen from "../Components/Auth";
 
 const AuthStack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
   return (
-      <AuthStack.Navigator>
+      <AuthStack.Navigator initialRouteName="signin" screenOptions={{
+        animation: "slide_from_right",
+        headerShown: false
+      }}>
+        {/* <AuthStack.Screen name="mainAuth" component={AuthScreen} /> */}
         <AuthStack.Screen name="signin" component={SigninScreen} />
         <AuthStack.Screen name="signup" component={SignupScreen} />
         <AuthStack.Screen name="recoverEmail" component={RecoverEmail} />

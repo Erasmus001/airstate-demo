@@ -1,7 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import {
-  Alert,
-  Appearance,
   StatusBar,
   StyleSheet,
   Text,
@@ -10,13 +9,27 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuthContext } from "../Context/AuthContext";
 
-const AuthScreen = ({ isSignin, isSignup, navigation }) => {
-  const [appColor, setAppColor] = React.useState(null);
+const AuthScreen = ({ isSignin, isSignup }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [fullname, setFullname] = React.useState("");
   const [emptyForm, setEmptyForm] = React.useState(true);
+
+  const { register, signIn } = useAuthContext();
+
+  const navigation = useNavigation();
+
+  // * Sign up
+  const createAccountWithEmail = (email, password) => {
+    register(email, password);
+  };
+
+  // * Login
+  const signInWithEmail = (email, password) => {
+    signIn(email, password);
+  };
 
   useEffect(() => {
     if (!email || (isSignup && !fullname) || !password) {
@@ -25,24 +38,6 @@ const AuthScreen = ({ isSignin, isSignup, navigation }) => {
       setEmptyForm(false);
     }
   }, [emptyForm, email, fullname, password]);
-
-  // Create account
-  const handleCreateAccount = () => {
-    Alert.alert("Signup successful");
-    console.log({ fullname, email, password });
-    setFullname("");
-    setEmail("");
-    setPassword("");
-  };
-
-  //* Login
-  const handleAccountLogin = () => {
-    Alert.alert("Login successful");
-    console.log({ fullname, email, password });
-    setFullname("");
-    setEmail("");
-    setPassword("");
-  };
 
   return (
     <>
@@ -129,7 +124,7 @@ const AuthScreen = ({ isSignin, isSignup, navigation }) => {
             <TouchableOpacity
               style={[styles.formSubmitBtn, emptyForm && styles.disabledBtn]}
               disabled={emptyForm && true}
-              onPress={isSignin ? handleAccountLogin : handleCreateAccount}
+              onPress={isSignin ? signInWithEmail : createAccountWithEmail}
             >
               <Text style={styles.formSubmitBtnTxt}>
                 {isSignin ? "Login" : "Create account"}
@@ -145,8 +140,8 @@ const AuthScreen = ({ isSignin, isSignup, navigation }) => {
                 style={styles.login}
                 onPress={() =>
                   isSignin
-                    ? navigation.push("signin")
-                    : navigation.push("signup")
+                    ? navigation.navigate("signup")
+                    : navigation.navigate("signin")
                 }
               >
                 {isSignup ? "Sign in" : "Sign up"}
