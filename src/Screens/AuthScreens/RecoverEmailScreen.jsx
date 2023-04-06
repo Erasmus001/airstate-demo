@@ -3,7 +3,7 @@ import { TextInput, TouchableOpacity } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const RecoverEmail = () => {
+const RecoverEmailScreen = () => {
   const [email, setEmail] = React.useState("");
   const [emptyForm, setEmptyForm] = React.useState(true);
 
@@ -56,7 +56,7 @@ const RecoverEmail = () => {
   );
 };
 
-export default RecoverEmail;
+export default RecoverEmailScreen;
 
 const styles = StyleSheet.create({
   container: {
