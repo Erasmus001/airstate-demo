@@ -7,9 +7,11 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthContext } from "../Context/AuthContext";
+import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
 const AuthScreen = ({ isSignin, isSignup }) => {
   const [email, setEmail] = React.useState("");
@@ -22,13 +24,38 @@ const AuthScreen = ({ isSignin, isSignup }) => {
   const navigation = useNavigation();
 
   // * Sign up
-  const createAccountWithEmail = (email, password) => {
-    register(email, password);
+  const createAccountWithEmail = () => {
+    register(email, password, fullname);
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: "Success",
+      textBody: "Signup successful",
+    });
+
+    navigation.navigate("index", {
+      screen: "home",
+    });
+    setEmail("");
+    setEmptyForm(true);
+    setFullname("");
+    setPassword("");
   };
 
   // * Login
-  const signInWithEmail = (email, password) => {
+  const signInWithEmail = () => {
     signIn(email, password);
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: "Success",
+      textBody: "Signin successful",
+    });
+
+    navigation.navigate("index", {
+      screen: "home",
+    });
+    setEmail("");
+    setEmptyForm(true);
+    setPassword("");
   };
 
   useEffect(() => {
@@ -44,11 +71,6 @@ const AuthScreen = ({ isSignin, isSignup }) => {
       <StatusBar barStyle={"light-content"} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
         <View style={styles.form}>
-          {/* Screen Logo */}
-          {/* <View style={{ width: "100%" }}>
-            <Text style={styles.logo}>Roomzy</Text>
-          </View> */}
-
           {/* Sign up Form */}
           <View style={styles.signupForm}>
             <View style={styles.formHead}>
@@ -110,7 +132,7 @@ const AuthScreen = ({ isSignin, isSignup }) => {
                 <View style={styles.forgotPassword}>
                   <Text
                     style={styles.forgotPasswordLink}
-                    onPress={() => navigation.push("resetPassword")}
+                    onPress={() => navigation.navigate("resetPassword")}
                   >
                     Forgot password?
                   </Text>
@@ -187,6 +209,7 @@ const styles = StyleSheet.create({
   formHead: {
     width: "100%",
     marginBottom: 30,
+    marginTop: 50,
   },
   formTitle: {
     fontSize: 42,

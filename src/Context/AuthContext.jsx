@@ -1,11 +1,18 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from "react";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
+import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
 const AuthContext = createContext({
   currentUser: null,
@@ -19,19 +26,14 @@ export const useAuthContext = () => useContext(AuthContext);
 
 const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [status, setStatus] = useState("");
 
-  useEffect(() => {
-    auth().onAuthStateChanged((user) => {
+  useLayoutEffect(() => {
+    onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
     });
   }, []);
 
   // * Authentication Methods from Firebase...
-
-  const signupWithGoogle = async () => {
-    return {};
-  };
 
   const logout = async () => {
     return signOut().catch((error) => {
@@ -39,7 +41,7 @@ const AuthContextProvider = ({ children }) => {
     });
   };
 
-  const register = async (email, password) => {
+  const register = async (email, password, fullname) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -47,13 +49,48 @@ const AuthContextProvider = ({ children }) => {
         password
       );
       const user = userCredential.user;
+      userCredential.user.displayName = fullname;
       setCurrentUser(user);
-      setStatus("Account successfully created");
+
+      if (
+        !errorCode == "auth/email-already-exists" ||
+        !errorCode == "auth/invalid-password" ||
+        !errorCode == "auth/user-not-found"
+      ) {
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: "Success",
+          textBody: "Signup successful",
+        });
+      }
     } catch (error) {
       const errorCode = error.code;
-      const errorMessage = error.message;
 
-      console.log(errorCode, errorMessage);
+      //* Check if email is already in use....
+      if (errorCode == "auth/email-already-exists") {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "Failed",
+          textBody: "The provided email is already in use by an existing user.",
+        });
+      }
+
+      if (errorCode == "auth/invalid-password") {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "Failed",
+          textBody:
+            "Passwords must be a string with at least six characters, a number and a symbol.",
+        });
+      }
+
+      if (errorCode == "auth/user-not-found") {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "Failed",
+          textBody: "User with provided details not found, please sign up",
+        });
+      }
     }
   };
 
@@ -66,9 +103,13 @@ const AuthContextProvider = ({ children }) => {
       );
       // Signed in
       const user = userCredential.user;
-      console.log(user);
+      console.log(status, JSON.stringify(user));
       setCurrentUser(user);
-      setStatus("Account successfully created");
+
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: `Welcome, ${userCredential.user.displayName}`,
+      });
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -88,9 +129,8 @@ const AuthContextProvider = ({ children }) => {
 
   const globVal = {
     currentUser,
-    status,
     setCurrentUser,
-    signupWithGoogle,
+    // signupWithGoogle,
     register,
     signIn,
     logout,

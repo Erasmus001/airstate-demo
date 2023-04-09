@@ -5,7 +5,7 @@ import RecoverEmail from "../Screens/AuthScreens/RecoverEmailScreen";
 import VerifyEmailScreen from "../Screens/AuthScreens/VerifyEmailScreen";
 import VerifyOTPScreen from "../Screens/AuthScreens/VerifyOTPScreen";
 import ResetPasswordScreen from "../Screens/AuthScreens/ResetPasswordScreen";
-import AuthScreen from "../Components/Auth";
+// import AuthScreen from "../Components/Auth";
 
 const AuthStack = createNativeStackNavigator();
 
