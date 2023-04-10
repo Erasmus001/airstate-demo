@@ -128,6 +128,8 @@ const AuthScreen = ({ isSignin, isSignup }) => {
                   required
                 />
               </View>
+
+              {/* Password Reset link */}
               {isSignin && (
                 <View style={styles.forgotPassword}>
                   <Text
@@ -149,24 +151,21 @@ const AuthScreen = ({ isSignin, isSignup }) => {
               onPress={isSignin ? signInWithEmail : createAccountWithEmail}
             >
               <Text style={styles.formSubmitBtnTxt}>
-                {isSignin ? "Login" : "Create account"}
+                {isSignin ? "Sign in" : "Create account"}
               </Text>
             </TouchableOpacity>
             <View style={styles.subTxt}>
-              <Text style={styles.haveAnAcc}>
-                {isSignup
-                  ? "Already have an account?"
-                  : "Don't have an account?"}
-              </Text>
               <Text
-                style={styles.login}
+                style={styles.haveAnAcc}
                 onPress={() =>
                   isSignin
                     ? navigation.navigate("signup")
                     : navigation.navigate("signin")
                 }
               >
-                {isSignup ? "Sign in" : "Sign up"}
+                {isSignup
+                  ? "Already have an account?"
+                  : "Don't have an account?"}
               </Text>
             </View>
           </View>

@@ -4,7 +4,7 @@ import { StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthContext } from "../../Context/AuthContext";
 
-const ResetPasswordScreen = () => {
+const ResetPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emptyForm, setEmptyForm] = useState(true);
@@ -13,12 +13,17 @@ const ResetPasswordScreen = () => {
   const { resetPassword } = useAuthContext();
 
   useEffect(() => {
-    if (!email || !password) {
+    if (!email) {
       setEmptyForm(true);
     } else {
       setEmptyForm(false);
     }
-  }, [emptyForm, email, password]);
+  }, [emptyForm, email]);
+
+  const handleResetPassword = () => {
+    // resetPassword();
+    navigation.navigate("VerifyOTP");
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
@@ -46,7 +51,7 @@ const ResetPasswordScreen = () => {
               />
             </View>
 
-            <View style={styles.formInputGroup}>
+            {/* <View style={styles.formInputGroup}>
               <Text style={styles.formInputTitle}>Password</Text>
               <TextInput
                 style={styles.inputBox}
@@ -61,7 +66,7 @@ const ResetPasswordScreen = () => {
                 placeholderTextColor="#535353"
                 required
               />
-            </View>
+            </View> */}
           </View>
         </View>
 
@@ -70,9 +75,9 @@ const ResetPasswordScreen = () => {
           <TouchableOpacity
             style={[styles.formSubmitBtn, emptyForm && styles.disabledBtn]}
             disabled={emptyForm && true}
-            onPress={resetPassword}
+            onPress={handleResetPassword}
           >
-            <Text style={styles.formSubmitBtnTxt}>Reset Password</Text>
+            <Text style={styles.formSubmitBtnTxt}>Continue</Text>
           </TouchableOpacity>
         </View>
       </View>
